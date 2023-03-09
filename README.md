@@ -14,7 +14,7 @@ In this project, two APIs are exposed to retrieve the account list and transacat
 
 mvn spring-boot:run
 
-#### Retrieve Account List - /user/{UserId}/accounts?pageNo=?&pageSize=?
+#### Retrieve Account List - /user/{userId}/accounts?pageNo=?&pageSize=?
 
 Sample Request and Response:
 
@@ -32,7 +32,7 @@ GET "http://localhost:8080/accounts/100?pageSize=1"
     }
 ```
 
-#### Retrieve Transaction History - /accounts/{AccountId}/transaction?pageNo=?&pageSize=?&sortBy=?
+#### Retrieve Transaction History - /accounts/{accountId}/transaction?pageNo=?&pageSize=?&sortBy=?
 
 Sample Request and Response:
 
