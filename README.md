@@ -1,26 +1,22 @@
-# spring-boot-microservices
+# Account List and Transaction History Microservice
 In this project, two APIs are exposed to retrieve the account list and transacation history details.
 
 ## Technologies
 
 - Spring Boot
-- MVC framework
 - Spring Data JPA
-- H2 Repository 
-- Spring Exception Handler
-- Pagination Concept
+- H2 Database 
 - Maven 
 - Mockito
+- Rest Assured
 
-## Running
+## Running the app locally
 
 To run each project either using your IDE or *mvn spring-boot:run* 
 
-Retrieve Account List - http://localhost:8080/accounts/{CustomerId}?pageNo=?&pageSize=?
+### Retrieve Account List - /user/{UserId}/accounts?pageNo=?&pageSize=?
 
-Sample Request and Response 
-
-GET http://localhost:8080/accounts/100?pageSize=2
+GET "http://localhost:8080/accounts/100?pageSize=2"
 
 [
     {
@@ -43,7 +39,7 @@ GET http://localhost:8080/accounts/100?pageSize=2
     }
 ]
 
-Retrieve Transaction History - http://localhost:8080/accounts/{AccountId}/transaction?pageNo=?&pageSize=?&sortBy=?
+### Retrieve Transaction History - /accounts/{AccountId}/transaction?pageNo=?&pageSize=?&sortBy=?
 
 GET http://localhost:8080/accounts/12345/transactions
 
