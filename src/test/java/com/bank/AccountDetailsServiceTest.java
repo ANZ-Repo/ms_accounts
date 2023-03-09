@@ -1,9 +1,10 @@
 package com.bank;
 
+import com.bank.api.AccountDetailsDTO;
 import com.bank.application.AccountService;
-import com.bank.entity.AccountDetails;
-import com.bank.entity.TransactionDetails;
-import com.bank.exception.CustomException;
+import com.bank.repository.entity.AccountDetails;
+import com.bank.repository.entity.TransactionDetails;
+import com.bank.api.TransactionDetailsDTO;
 import com.bank.repository.AccountDetailsRepository;
 import com.bank.repository.TransactionDetailsRepository;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -32,20 +34,19 @@ public class AccountDetailsServiceTest {
     @InjectMocks
     private AccountService accountService;
 
-
     @Test
     void testAccountDetails() {
         Pageable paging = PageRequest.of(0, 10);
-        when(accountDetailsRepository.findByCustomerId(eq(2L),eq(paging))).thenReturn(
+        when(accountDetailsRepository.findByUserId(eq(2L),eq(paging))).thenReturn(
            List.of(AccountDetails.builder()
                    .accountType("savings")
-                   .accountNumber(Long.valueOf("12345"))
+                   .accountId(Long.valueOf("12345"))
                    .accountName("accname")
                    .currency("AUD")
                    .balance(String.valueOf(100))
                    .build()));
-    List<AccountDetails> accountDetailsList = accountService.getAccountDetailsList(2L,0,10);
-    assertEquals(accountDetailsList.get(0).getAccountNumber(), 12345 );
+    List<AccountDetailsDTO> accountDetailsList = accountService.getAccountDetailsList(2L,0,10);
+    assertEquals(accountDetailsList.get(0).getAccountId(), 12345 );
     assertEquals(accountDetailsList.get(0).getAccountType(), "savings" );
     assertEquals(accountDetailsList.get(0).getAccountName(), "accname" );
     assertEquals(accountDetailsList.get(0).getCurrency(), "AUD" );
@@ -55,18 +56,17 @@ public class AccountDetailsServiceTest {
     @Test
     void testTransactionDetails(){
         Pageable paging = PageRequest.of(1, 10, Sort.by("transdate").descending());
-        when(transactionDetailsRepository.findByAccountNumber(eq(2L),eq(paging))).thenReturn(
+        when(transactionDetailsRepository.findByAccountAccountId(eq(2L),eq(paging))).thenReturn(
                 List.of(TransactionDetails.builder()
-                        .accountNumber(12345L)
-                        .accountName("savings")
+                        .account(AccountDetails.builder().accountId(12345L).accountName("savings").build())
                         .currency("AUD")
                         .creditAmount("20")
                         .debitAmount("0")
                         .transType("credit")
                         .build())
         );
-        List<TransactionDetails> transactionDetailsList = accountService.getTransactionDetailsList(1, 10, "transdate", 2L);
-        assertEquals(transactionDetailsList.get(0).getAccountNumber(), 12345 );
+        List<TransactionDetailsDTO> transactionDetailsList = accountService.getTransactionDetailsList(1, 10, "transdate", 2L);
+        assertEquals(transactionDetailsList.get(0).getAccountId(), 12345 );
         assertEquals(transactionDetailsList.get(0).getAccountName(), "savings" );
         assertEquals(transactionDetailsList.get(0).getCurrency(), "AUD" );
         assertEquals(transactionDetailsList.get(0).getCreditAmount(), "20" );
@@ -76,14 +76,14 @@ public class AccountDetailsServiceTest {
     @Test
     void testTransactionDetailsIdNotFound(){
         Pageable paging = PageRequest.of(1, 10, Sort.by("transdate").descending());
-        when(transactionDetailsRepository.findByAccountNumber(eq(1L),eq(paging))).thenReturn(List.of());
-        assertThrows(CustomException.class, ()->accountService.getTransactionDetailsList(1, 10, "transdate", 1L));
+        when(transactionDetailsRepository.findByAccountAccountId(eq(1L),eq(paging))).thenReturn(List.of());
+        assertThrows(NoSuchElementException.class, ()->accountService.getTransactionDetailsList(1, 10, "transdate", 1L));
     }
     @Test
     void testAccountDetailsIdNotFound(){
         Pageable paging = PageRequest.of(1, 10);
-        when(accountDetailsRepository.findByCustomerId(eq(2L),eq(paging))).thenReturn(List.of());
-        assertThrows(CustomException.class, ()->accountService.getAccountDetailsList(2L,1,10));
+        when(accountDetailsRepository.findByUserId(eq(2L),eq(paging))).thenReturn(List.of());
+        assertThrows(NoSuchElementException.class, ()->accountService.getAccountDetailsList(2L,1,10));
     }
 
 }

@@ -1,4 +1,4 @@
-package com.bank.entity;
+package com.bank.repository.entity;
 
 import lombok.Builder;
 import lombok.Getter;

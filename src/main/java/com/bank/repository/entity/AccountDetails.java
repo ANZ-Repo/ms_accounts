@@ -1,4 +1,4 @@
-package com.bank.entity;
+package com.bank.repository.entity;
 
 
 import lombok.*;
@@ -17,15 +17,15 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDetails {
-    @Column(name = "customer_id")
-    private Long customerId;
+
     @Id
-    @Column(name = "account_id")
-    private Long accountNumber;
-    @Column(name = "account_type")
-    private String accountType;
+    private Long accountId;
     @Column(name = "account_name")
     private String accountName;
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "account_type")
+    private String accountType;
     @Column(name = "balance_date")
     private Date balanceDate;
     @Column(name = "currency")
