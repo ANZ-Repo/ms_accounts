@@ -12,14 +12,16 @@ In this project, two APIs are exposed to retrieve the account list and transacat
 
 ## Running the app locally
 
-To run each project either using your IDE or *mvn spring-boot:run* 
+mvn spring-boot:run
 
-### Retrieve Account List - /user/{UserId}/accounts?pageNo=?&pageSize=?
+#### Retrieve Account List - /user/{UserId}/accounts?pageNo=?&pageSize=?
 
-GET "http://localhost:8080/accounts/100?pageSize=2"
+Sample Request and Response:
 
-[
-    {
+GET "http://localhost:8080/accounts/100?pageSize=1"
+
+```JSON
+   {
         "customerId": 100,
         "accountNumber": 12345,
         "accountType": "savings",
@@ -27,23 +29,17 @@ GET "http://localhost:8080/accounts/100?pageSize=2"
         "balanceDate": "2021-12-31T12:59:59.000+00:00",
         "currency": "AUD",
         "balance": "100"
-    },
-    {
-        "customerId": 100,
-        "accountNumber": 34567,
-        "accountType": "savings",
-        "accountName": "accname",
-        "balanceDate": "2021-12-31T12:59:59.000+00:00",
-        "currency": "AUD",
-        "balance": "100"
     }
-]
+```
 
-### Retrieve Transaction History - /accounts/{AccountId}/transaction?pageNo=?&pageSize=?&sortBy=?
+#### Retrieve Transaction History - /accounts/{AccountId}/transaction?pageNo=?&pageSize=?&sortBy=?
+
+Sample Request and Response:
 
 GET http://localhost:8080/accounts/12345/transactions
 
-[
+```JSON
+
     {
         "accountNumber": 12345,
         "accountName": "savings",
@@ -53,4 +49,4 @@ GET http://localhost:8080/accounts/12345/transactions
         "debitAmount": "0",
         "transType": "credit"
     }
-]
+```
